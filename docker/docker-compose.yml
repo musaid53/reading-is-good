@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+
+  mongo:
+    container_name: mongo-db
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: reading
+      MONGO_INITDB_ROOT_PASSWORD: isgood
+
+  discovery-service:
+    image: readingisgood/discovery-service:latest
+    container_name: discovery-service
+    restart: always
+    environment:
+      EUREKA_SERVER_PORT: 8761
+      EUREKA_SERVICE_URL: http://discovery-service:8761
+    ports:
+      - "8761:8761"
+  api-gateway:
+    image: readingisgood/api-gateway:latest
+    container_name: api-gateway
+    restart: always
+    environment:
+      API_GATEWAY_PORT: 8081
+      EUREKA_SERVICE_URL: http://discovery-service:8761
+    ports:
+      - "8081:8081"
+
+#  mongo-express:
+#    image: mongo-express
+#    restart: always
+#    ports:
+#      - "8081:8081"
+#    environment:
+#      ME_CONFIG_MONGODB_ADMINUSERNAME: reading
+#      ME_CONFIG_MONGODB_ADMINPASSWORD: isgood
+#      ME_CONFIG_MONGODB_URL: mongodb://reading:isgood@mongo:27017/
