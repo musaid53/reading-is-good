@@ -1,0 +1,22 @@
+package com.msaid.stockservice.mongo.doc;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.List;
+
+@Document
+@Data
+@Builder
+@ToString
+@JsonInclude(JsonInclude.Include.NON_ABSENT)
+@AllArgsConstructor
+@NoArgsConstructor
+public class Order {
+    @Id
+    private long orderId;
+    private String username;
+    private List<Book> books;
+}
