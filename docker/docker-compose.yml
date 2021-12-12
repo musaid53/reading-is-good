@@ -9,6 +9,8 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: reading
       MONGO_INITDB_ROOT_PASSWORD: isgood
+    ports:
+      - "27017:27017"
 
   discovery-service:
     image: readingisgood/discovery-service:latest

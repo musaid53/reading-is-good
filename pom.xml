@@ -41,6 +41,11 @@
         </dependency>
     </dependencies>
 
+    <modules>
+        <module>api-gateway</module>
+        <module>discovery-service</module>
+    </modules>
+
     <build>
     </build>
 
