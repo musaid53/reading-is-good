@@ -30,7 +30,7 @@ public class UserServiceClient {
     public void init(){
 
         webClient = WebClient.builder()
-                .baseUrl(userServiceBaseUrl)
+                .baseUrl(userServiceBaseUrl )
                 .defaultHeaders(httpHeaders -> {
                     httpHeaders.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
                     httpHeaders.add("service-secret",serviceSecret);
@@ -41,7 +41,7 @@ public class UserServiceClient {
     public CompletableFuture<UserDto> getUser(String userName){
         return webClient
                 .get()
-                .uri(uriBuilder -> uriBuilder.path("/get-user/{id}").build(userName))
+                .uri(uriBuilder -> uriBuilder.path("/get-user/{username}").build(userName))
                 .retrieve()
                 .bodyToMono(UserDto.class).toFuture();
     }

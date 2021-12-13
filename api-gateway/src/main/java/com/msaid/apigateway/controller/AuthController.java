@@ -1,6 +1,6 @@
 package com.msaid.apigateway.controller;
 
-import com.msaid.apigateway.dto.AuthRequest;
+import com.msaid.common.dto.AuthRequest;
 import com.msaid.apigateway.dto.AuthResponse;
 import com.msaid.apigateway.service.AuthService;
 import com.msaid.common.dto.UserDto;
@@ -18,16 +18,6 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @GetMapping("/message")
-    public String message(){
-        return "HelloĞĞ";
-    }
-
-//    @PostMapping("register")
-//    public AuthResponse register(AuthRequest authRequest){
-//
-//    }
-
     @GetMapping("/apig/{username}")
     public CompletableFuture<ResponseEntity<UserDto>> getUser(@PathVariable("username") String username){
         return authService.getUser(username).thenApply(ResponseEntity::ok);
@@ -36,6 +26,11 @@ public class AuthController {
     @PostMapping("register")
     public CompletableFuture<ResponseEntity<AuthResponse>> register(@RequestBody AuthRequest authRequest){
         return authService.register(authRequest).thenApply(ResponseEntity::ok);
+    }
+
+    @PostMapping("get-token")
+    public CompletableFuture<ResponseEntity<AuthResponse>> getToken(@RequestBody AuthRequest authRequest){
+        return authService.generateToken(authRequest).thenApply(ResponseEntity::ok);
     }
 
 }

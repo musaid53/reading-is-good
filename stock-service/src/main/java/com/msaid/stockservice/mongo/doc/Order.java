@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.msaid.stockservice.dto.BookOrderDto;
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
@@ -24,6 +25,7 @@ public class Order {
     private Long orderId ;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
     private Date orderDate;
+    @Indexed
     private String username;
     private List<BookOrderDto> books;
     private BigDecimal totalPrice;

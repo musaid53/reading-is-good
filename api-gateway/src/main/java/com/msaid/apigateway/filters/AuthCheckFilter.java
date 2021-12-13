@@ -22,9 +22,9 @@ import java.util.function.Predicate;
 @Component
 @Log4j2
 public class AuthCheckFilter  implements GatewayFilter {
-    private static final List<String> NON_SECURE_APIS = List.of("/register", "/login");
-    private static Predicate<ServerHttpRequest> isSecure =
-            serverHttpRequest -> NON_SECURE_APIS.stream().noneMatch(uri -> serverHttpRequest.getURI().getPath().contains(uri));
+    private static final List<String> ADMIN_APIS = List.of("/statistic", "/book", "/user");
+    private static final Predicate<ServerHttpRequest> isAdmin =
+            serverHttpRequest -> ADMIN_APIS.stream().anyMatch(uri -> serverHttpRequest.getURI().getPath().startsWith(uri));
 
     @Value("${serviceclient.secret:secret}")
     private String serviceSecret;
@@ -41,10 +41,14 @@ public class AuthCheckFilter  implements GatewayFilter {
             if (isAuthMissing(request))
                 return onError(exchange, HttpStatus.UNAUTHORIZED);
 
-            final String token = this.getAuthHeader(request);
+            final String token = getAuthHeader(request);
 
             if (jwtUtil.isInvalid(token))
                 return onError(exchange, HttpStatus.UNAUTHORIZED);
+
+            if (isAdmin.test(request) && ! jwtUtil.hasAdminRole(token)){
+                return onError(exchange, HttpStatus.UNAUTHORIZED);
+            }
 
         }
 

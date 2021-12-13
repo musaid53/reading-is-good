@@ -6,7 +6,7 @@ spring:
     name: stock-service
   data:
     mongodb:
-      uri: mongodb://reading:isgood@localhost:27017/
+      uri: mongodb://reading:isgood@${MONGO_URL:localhost:27017}
       database: readingisgood
 eureka:
   client:
@@ -15,3 +15,5 @@ eureka:
 
 serviceclient:
   secret: dGhpc3Byb2plY3Rpc2JpZw==
+user-service:
+  baseurl: ${USER_SERVICE_URL:http://localhost:8082/user}

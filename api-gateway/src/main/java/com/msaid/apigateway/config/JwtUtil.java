@@ -3,18 +3,18 @@ import com.msaid.apigateway.dto.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 
 @Component
+@Log4j2
 public class JwtUtil {
     @Value("${jwt.secret}")
     private String secret;
@@ -43,7 +43,12 @@ public class JwtUtil {
         return expiration.before(new Date());
     }
     public boolean isInvalid(String token) {
-        return isTokenExpired(token);
+        try {
+            return isTokenExpired(token);
+        }catch (Exception e){
+            log.error("token parse error: {}",e.getLocalizedMessage());
+            return true;
+        }
     }
 
     public String generate(User user) {
@@ -75,5 +80,10 @@ public class JwtUtil {
     private <T> T getClaimFromToken(String token, Function<Claims, T> claimResolver) {
         final Claims claims = getAllClaimsFromToken(token);
         return claimResolver.apply(claims);
+    }
+
+    public boolean hasAdminRole(String token) {
+        List<String> roles = (List<String>) getAllClaimsFromToken(token).get("role");
+        return roles.contains("admin");
     }
 }

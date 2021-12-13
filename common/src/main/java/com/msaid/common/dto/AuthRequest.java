@@ -1,4 +1,4 @@
-package com.msaid.apigateway.dto;
+package com.msaid.common.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

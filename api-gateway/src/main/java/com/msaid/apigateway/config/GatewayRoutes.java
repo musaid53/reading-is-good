@@ -7,6 +7,8 @@ import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @RequiredArgsConstructor
@@ -20,7 +22,7 @@ public class GatewayRoutes {
         return routeLocatorBuilder.routes()
                 .route("user-service", predicateSpec ->
                     predicateSpec.path("/user/**")
-                            .filters(f -> f.rewritePath("/user/(?<path>.*)", "/${path}")
+                            .filters(f -> f.rewritePath("/user/(?<path>.*)", "/user/${path}")
                                     .filter(authCheckFilter))
                             .uri("lb://user-service")
                 )
@@ -31,5 +33,10 @@ public class GatewayRoutes {
                                 .uri("lb://stock-service")
                 )
                 .build();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
     }
 }

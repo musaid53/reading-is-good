@@ -4,9 +4,12 @@ import com.msaid.common.integration.UserServiceClient;
 import com.msaid.stockservice.ErrorUtil;
 import com.msaid.stockservice.dto.BookOrderDto;
 import com.msaid.stockservice.dto.OrderDto;
+import com.msaid.stockservice.dto.PagedOrderDto;
 import com.msaid.stockservice.mongo.doc.Order;
 import com.msaid.stockservice.mongo.repo.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,6 +66,24 @@ public class OrderService implements ErrorUtil {
         return orderRepository.findById(orderId)
                 .switchIfEmpty(handleErrorMono(String.format("No order found given id: %s",orderId)))
                 .toFuture();
+    }
+
+    public CompletableFuture<List<Order>> getOrderByDate(Date startDate, Date endDate){
+        return orderRepository.findByOrderDateBetween(startDate, endDate)
+                .collectList()
+                .toFuture();
+    }
+    public CompletableFuture<PagedOrderDto> getOrdersByUserName(String username, int pageNumber){
+        Pageable pageRequest = PageRequest.of(pageNumber, 50);
+        return orderRepository.findByUsername(username, pageRequest)
+                .collectList()
+                .toFuture()
+                .thenApply(orders -> PagedOrderDto.builder()
+                        .orders(orders)
+                        .pageNumber(pageNumber)
+                        .pageSize(50)
+                        .username(username)
+                        .build());
     }
 
 }
