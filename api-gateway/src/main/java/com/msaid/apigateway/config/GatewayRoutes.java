@@ -24,6 +24,12 @@ public class GatewayRoutes {
                                     .filter(authCheckFilter))
                             .uri("lb://user-service")
                 )
+                .route("stock-service", predicateSpec ->
+                        predicateSpec.path("/stock/**")
+                                .filters(f -> f.rewritePath("/stock/(?<path>.*)", "/${path}")
+                                        .filter(authCheckFilter))
+                                .uri("lb://stock-service")
+                )
                 .build();
     }
 }

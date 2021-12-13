@@ -2,8 +2,8 @@ package com.msaid.apigateway.controller;
 
 import com.msaid.apigateway.dto.AuthRequest;
 import com.msaid.apigateway.dto.AuthResponse;
-import com.msaid.apigateway.dto.User;
-import com.msaid.apigateway.integration.UserServiceClient;
+import com.msaid.apigateway.service.AuthService;
+import com.msaid.common.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ import java.util.concurrent.CompletableFuture;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private  final  UserServiceClient userServiceClient;
+    private final AuthService authService;
 
     @GetMapping("/message")
     public String message(){
@@ -29,13 +29,13 @@ public class AuthController {
 //    }
 
     @GetMapping("/apig/{username}")
-    public CompletableFuture<ResponseEntity<User>> getUser(@PathVariable("username") String username){
-        return userServiceClient.getUsers(username).thenApply(ResponseEntity::ok);
+    public CompletableFuture<ResponseEntity<UserDto>> getUser(@PathVariable("username") String username){
+        return authService.getUser(username).thenApply(ResponseEntity::ok);
     }
 
     @PostMapping("register")
     public CompletableFuture<ResponseEntity<AuthResponse>> register(@RequestBody AuthRequest authRequest){
-        return userServiceClient.register(authRequest).thenApply(ResponseEntity::ok);
+        return authService.register(authRequest).thenApply(ResponseEntity::ok);
     }
 
 }

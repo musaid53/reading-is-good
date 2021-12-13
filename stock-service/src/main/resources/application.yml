@@ -1,0 +1,17 @@
+server:
+  port: ${STOCK_SERVICE_PORT:8083}
+
+spring:
+  application:
+    name: stock-service
+  data:
+    mongodb:
+      uri: mongodb://reading:isgood@localhost:27017/
+      database: readingisgood
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVICE_URL:http://localhost:8761}/eureka/
+
+serviceclient:
+  secret: dGhpc3Byb2plY3Rpc2JpZw==

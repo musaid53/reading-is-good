@@ -42,6 +42,9 @@ public class JwtUtil {
         final Date expiration = getExpirationDateFromToken(token);
         return expiration.before(new Date());
     }
+    public boolean isInvalid(String token) {
+        return isTokenExpired(token);
+    }
 
     public String generate(User user) {
         Map<String, Object> claims = new HashMap<>();
