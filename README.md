@@ -2,7 +2,7 @@
 
 ### Architecture
 
-![](../docs/readingisgood.png?raw=true "Title")
+![](https://github.com/musaid53/reading-is-good/blob/master/docs/readingisgood.png?raw=true)
 
 ### api-gateway:
     api gateway is responsible for delegating routes to related service and also validation token
