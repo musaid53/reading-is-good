@@ -2,7 +2,7 @@
 
 ### Architecture
 
-![Alt text](../docs/readingisgood.png?raw=true "Title")
+![](../docs/readingisgood.png?raw=true "Title")
 
 ### api-gateway:
     api gateway is responsible for delegating routes to related service and also validation token
